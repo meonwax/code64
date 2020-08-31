@@ -1,0 +1,26 @@
+; Set screen colors
+  lda #COLOR_BLACK
+  sta VIC_BORDER_COLOR
+  sta VIC_BG_COLOR
+
+; Clear screen to black
+  ldx #$00
+-
+  lda #$20
+  sta VIC_SCREEN_RAM,x
+  sta VIC_SCREEN_RAM + $0100,x
+  sta VIC_SCREEN_RAM + $0200,x
+  sta VIC_SCREEN_RAM + $0300,x
+  inx
+  bne -
+
+; Write string  
+  ldx #$00
+-
+  lda #COLOR_YELLOW
+  sta VIC_COLOR_RAM + 413,x   ; set color
+  lda hello,x
+  sta VIC_SCREEN_RAM + 413,x  ; set char
+  inx
+  cpx #12
+  bne -
