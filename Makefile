@@ -4,7 +4,7 @@ VICE = x64
 
 all: $(OUTPUT)
 
-$(OUTPUT): main.a definitions.a hello.a rasterbar.a
+$(OUTPUT): main.a definitions.a strings.a hello.a rasterbar.a
 	$(ACME) -o $(OUTPUT) main.a
 
 run: $(OUTPUT)

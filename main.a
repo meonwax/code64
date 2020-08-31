@@ -9,11 +9,10 @@
   !word 0
 
   !src "definitions.a"
-  !src "hello.a"
   !src "rasterbar.a"
+  !src "hello.a"
 
 ; Stay forever  
 - jmp -
 
-hello:
-  !scr "hello world!"
+  !src "strings.a"
