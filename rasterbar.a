@@ -1,0 +1,54 @@
+  sei                 ; disable interrupts
+  
+  lda #<irq_handler   ; set low byte of irq handler
+  sta IRQ_VECTOR_LOW
+  lda #>irq_handler   ; set high byte of irq handler
+  sta IRQ_VECTOR_HIGH
+
+  lda #0              ; set raster line for irq
+  sta VIC_RASTER_LINE
+  lda VIC_RASTER_LINE_HIGH
+  and #%01111111
+  sta VIC_RASTER_LINE_HIGH
+
+  lda VIC_IRQ_CTRL    ; enable raster irqs
+  ora #%00000001
+  sta VIC_IRQ_CTRL
+
+  cli                 ; enable interrupts again
+  jmp irq_handler_end
+
+irq_handler
+  lda VIC_IRQ_STATUS
+  bmi +               ; check if raster irq
+  lda $dc0d           ; if not, commit cia irq...
+  cli
+  jmp $ea31           ; ...and jump to default routine
++
+  lda VIC_IRQ_STATUS  ; commit raster irq                 
+  sta VIC_IRQ_STATUS
+
+  lda VIC_RASTER_LINE ; load current raster line...
+  bne +               ; ... and check if it is the first line
+  lda #COLOR_BLACK    ; set black
+  sta VIC_BORDER_COLOR
+  sta VIC_BG_COLOR
+  lda #190            ; next irq on defined line
+  sta VIC_RASTER_LINE
+  jmp irq_handler_exit
++ 
+  lda #COLOR_PURPLE   ; special color from defined line on
+  sta VIC_BORDER_COLOR
+  sta VIC_BG_COLOR
+  lda #0              ; next irq again on first line
+  sta VIC_RASTER_LINE
+
+irq_handler_exit
+  pla                 ; pull y from stack
+  tay
+  pla                 ; pull x from stack
+  tax
+  pla                 ; pull a from stack
+  rti
+
+irq_handler_end

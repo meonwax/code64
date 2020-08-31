@@ -13,6 +13,7 @@
   !src "hello.a"
 
 ; Stay forever  
-- jmp -
+;- jmp -
+  rts
 
   !src "strings.a"
