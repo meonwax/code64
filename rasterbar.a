@@ -1,5 +1,5 @@
   sei                 ; disable interrupts
-  
+
   lda #<irq_handler   ; set low byte of irq handler
   sta IRQ_VECTOR_LOW
   lda #>irq_handler   ; set high byte of irq handler
@@ -25,7 +25,7 @@ irq_handler
   cli
   jmp $ea31           ; ...and jump to default routine
 +
-  lda VIC_IRQ_STATUS  ; commit raster irq                 
+  lda VIC_IRQ_STATUS  ; commit raster irq
   sta VIC_IRQ_STATUS
 
   lda VIC_RASTER_LINE ; load current raster line...
@@ -36,7 +36,7 @@ irq_handler
   lda #190            ; next irq on defined line
   sta VIC_RASTER_LINE
   jmp irq_handler_exit
-+ 
++
   lda #COLOR_PURPLE   ; special color from defined line on
   sta VIC_BORDER_COLOR
   sta VIC_BG_COLOR

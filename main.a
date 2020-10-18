@@ -1,5 +1,5 @@
 ; Basic header
-  *=$0801
+  *= $0801
   !word +
   !word 10
   !byte $9e
@@ -12,7 +12,7 @@
   !src "rasterbar.a"
   !src "hello.a"
 
-; Stay forever  
+; Stay forever
 ;- jmp -
   rts
 
